@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.kmt</groupId>
-    <artifactId>system-design-java</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>low-level-design</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <build>
         <plugins>
             <plugin>
