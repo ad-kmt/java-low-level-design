@@ -16,6 +16,8 @@ The Factory Method Pattern is best applied in scenarios where:
 
 A typical implementation involves a `Creator` interface with a method that returns objects of a `Product` interface. The specific product class instantiated by the factory method can be determined by subclasses, making the system flexible and extendable.
 
+![Factory Method UML](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Factory_Method_UML_class_diagram.svg/2560px-Factory_Method_UML_class_diagram.svg.png "Factory Method UML")
+
 ## Basic Java Code Example
 
 ```java
