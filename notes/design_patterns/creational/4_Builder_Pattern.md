@@ -1,56 +1,81 @@
-# Builder Pattern
+# Abstract Factory Method Pattern
 
-The Builder Pattern is a creational design pattern that separates the construction of a complex object from its representation. By doing so, the same construction process can create different representations. This pattern is particularly useful when an object needs to be created with many optional components or configurations.
+## Intent
 
-## Intent and Applicability
+Abstract Factory is a creational design pattern that lets you produce families of related objects without specifying their concrete classes. It involves multiple factory methods, one for each type of object to be created.
 
-- **Intent**: To separate the construction of a complex object from its representation, allowing the same construction process to create different representations.
-- **Applicability**: Useful in scenarios where a product has multiple configurations or variations and when the construction process must allow different representations of the constructed object.
 
-## Implementation
+## Difference Between Abstract Factory and Factory Method
 
-The pattern involves a Director that controls the construction process and a Builder that creates and assembles the parts of the product. The Builder provides an interface for adding parts to the product, and the Director tells the Builder when each part should be added.
+The Abstract Factory and Factory Method patterns are both creational design patterns that deal with object creation, but they serve different purposes and are applied in different scenarios:
 
-## Components
+- **Factory Method** is about creating a **single object**.
+    - It allows a class to defer the instantiation of its objects to its subclasses, providing a way to delegate the creation process to child classes.
+    - The Factory Method allows for the extension of the product types and creator types through subclassing the product and  creator interfaces.
+- **Abstract Factory** involves creating **families of related or dependent objects** without specifying their concrete classes.
+    - It provides an interface for creating families of related objects, without needing to know the exact classes of the objects that will be created.
+    - The Abstract Factory pattern uses multiple Factory Methods, one for each type of product to be created
+    - The concrete implementations of  Abstract Factory implement these methods to create products belonging to same family.
 
-- **Builder**: Provides an interface for adding parts to the objects being constructed.
-- **ConcreteBuilder**: Implements the Builder interface and provides an interface for retrieving the final product.
-- **Director**: Constructs an object using the Builder interface.
-- **Product**: The object being constructed.
+## What problem it solves?
+It solves the challenge of ensuring object compatibility within a family while accommodating system evolution with new products or families without modifying core code.
 
-[![Builder Pattern](https://www.oodesign.com/images/creational/builder-pattern.png "Builder Pattern")](https://www.oodesign.com/builder-pattern "Builder Pattern")
+By defining interfaces for product families and implementing concrete factories per variant, it allows systems to produce compatible objects and easily adapt to new product types.
 
-## The Role of the Director
+## Structure
 
-The Director plays a crucial role in the Builder Pattern by managing the construction process of a product. It knows which Builder to use and how to use it to execute the building steps in a specific sequence. The Director ensures that the construction process is executed methodically to build a product that meets certain requirements or specifications.
+- **AbstractFactory**: Provides an interface for creating a family of related objects.
+- **ConcreteFactory**: Implements the interfaces declared by the AbstractFactory to create concrete products.
+- **AbstractProduct**: Declares a type for a family of products.
+- **ConcreteProduct**: Implements the AbstractProduct interface to define a product to be created by the corresponding ConcreteFactory.
+- **Client**: Uses interfaces declared by the AbstractFactory and AbstractProduct classes.
 
-#### Why the Director Might Not Be Used in Some Implementations
+[![Abstract Factory Pattern Structure](https://refactoring.guru/images/patterns/diagrams/abstract-factory/structure.png "Abstract Factory Pattern Structure")](https://refactoring.guru/design-patterns/abstract-factory "Abstract Factory Pattern Structure")
 
-The Director is not strictly required for all Builder Pattern implementations. Its necessity depends on the complexity of the construction process and whether the construction logic should be encapsulated within a separate class.
+## Example with Pseudocode:
 
-In scenarios where the building process is straightforward or where clients need the flexibility to define their own construction sequence, directly interacting with the Builder might be preferred.
+This example illustrates how the Abstract Factory pattern can be used for creating cross-platform UI elements without coupling the client code to concrete UI classes, while keeping all created elements consistent with a selected operating system.
 
+[![Pseudocode example abstract factory method](https://refactoring.guru/images/patterns/diagrams/abstract-factory/example.png "Pseudocode example abstract factory method")](https://refactoring.guru/design-patterns/abstract-factory "Pseudocode example abstract factory method")
+
+- The `GUIFactory `interface declares a set of creation methods that the client code can use to produce different types of UI elements.
+- Concrete factories (`WinFactory` and `MacFactory`) correspond to specific operating systems and create the UI elements that match that particular OS.
+
+**Working:** It works like this: when an application launches, it checks the type of the current operating system. The app uses this information to create a factory object from a class that matches the operating system. The rest of the code uses this factory to create UI elements.
+
+**Benefits:**
+- With this approach, the client code doesn’t depend on concrete classes of factories (`WinFactory` and `MacFactory`) and UI elements as long as it works with these objects via their abstract interfaces (`GUIFactory`).
+
+- Also, you don’t need to modify the client code each time you add a new variation of UI elements to your app. You just have to create a new factory class that produces these elements and slightly modify the app’s initialization code so it selects that class when appropriate.
+
+**Pseudocode**: TODO
 
 ## Advantages and Disadvantages
 
 ### Advantages
-- Allows for fine control over the construction process.
-- Supports varying the product’s internal representation.
-- Encapsulates code for construction and representation.
+- Promotes consistency among products.
+- You avoid tight coupling between concrete products and client code.
+- Single Responsibility Principle. You can extract the product creation code into one place, making the code easier to support.
+- Open/Closed Principle. You can introduce new variants of products without breaking existing client code.
 
 ### Disadvantages
-- Can result in a large number of Builder classes when many options are available for the object being constructed.
+- The code may become more complicated than it should be, since a lot of new interfaces and classes are introduced along with the pattern.
+
+## Applicability
+- **Use the Abstract Factory when your code needs to work with various families of related products, but you don’t want it to depend on the concrete classes of those products**
+    - they might be unknown beforehand or you simply want to allow for future extensibility.
+
+- **Consider implementing the Abstract Factory when you have a class with a set of Factory Methods that blur its primary responsibility.**
+    -  In a well-designed program each class is responsible only for one thing. When a class deals with multiple product types, it may be worth extracting its factory methods into a stand-alone factory class or a full-blown Abstract Factory implementation.
 
 ## Real-world Applications
 
-- **Text Converters**: Building different formats of documents, like RTF, HTML, or PDF, from a set of text data.
-- **Meal Preparations**: Assembling different types of meals using the same process but with different ingredients and quantities.
+- **UI Toolkits and Themes**: Differentiating between families of products such as UI elements that vary between operating systems.
+- **Cross-platform Software Development**: Creating suites of products where each family corresponds to a different operating system.
+- **Database Access Libraries**: Libraries providing a uniform interface to access different types of databases, abstracting the specific database access APIs.
 
 ## Design Considerations
 
-Implementing the Builder Pattern requires understanding the product's composition to effectively separate the construction process from its representation.
+Implementing the Abstract Factory Pattern requires careful consideration to maintain flexibility and ensure that adding new families of products does not require extensive changes to the existing factory interface.
 
-## Additional Implementations
 
-- **Fluent Interface**: Enhancing the usability of the builder with chainable method calls.
-- **Immutable Objects**: Using the builder pattern to ensure the constructed object is immutable.
