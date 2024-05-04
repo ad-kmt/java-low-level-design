@@ -18,6 +18,9 @@ The Abstract Factory and Factory Method patterns are both creational design patt
   - The concrete implementations of  Abstract Factory implement these methods to create products belonging to same family.
 
 ## What problem it solves?
+
+TODO: Easy to remember if example was used.
+
 It solves the challenge of ensuring object compatibility within a family while accommodating system evolution with new products or families without modifying core code.
 
 By defining interfaces for product families and implementing concrete factories per variant, it allows systems to produce compatible objects and easily adapt to new product types.
