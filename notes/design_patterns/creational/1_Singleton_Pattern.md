@@ -1,5 +1,7 @@
 # Singleton Pattern
 
+TODO: Remove irrelevant and repeated information
+
 ## Intent
 
 The Singleton Pattern ensures that a class has only one instance and provides a global point of access to that instance.
